@@ -99,3 +99,26 @@ Output: `2`
 - Math (Digit distribution)
 - Strings and indexing
 - Greedy / Positional simulation
+
+## Here is another code that just work but not on large test cases 
+```cpp
+class Solution {
+public:
+    int findNthDigit(int n) {
+        int i = 0;
+        int previdx = 0;
+        int index = 0;
+        while(index<n){
+            i++;
+            string num = to_string(i);
+            previdx = index;
+            index+= num.length();
+
+        }
+
+        string str = to_string(i);
+        return str[n-previdx-1]-'0';
+    }
+};
+
+```
