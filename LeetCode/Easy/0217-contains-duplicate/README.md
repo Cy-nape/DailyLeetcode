@@ -1,42 +1,75 @@
-<h2><a href="https://leetcode.com/problems/contains-duplicate">217. Contains Duplicate</a></h2><h3>Easy</h3><hr><p>Given an integer array <code>nums</code>, return <code>true</code> if any value appears <strong>at least twice</strong> in the array, and return <code>false</code> if every element is distinct.</p>
+# ✅ LeetCode Problem: Contains Duplicate
 
-<p>&nbsp;</p>
-<p><strong class="example">Example 1:</strong></p>
+**Problem Statement:**
 
-<div class="example-block">
-<p><strong>Input:</strong> <span class="example-io">nums = [1,2,3,1]</span></p>
+Given an integer array `nums`, return `true` if any value appears **at least twice** in the array, and return `false` if every element is distinct.
 
-<p><strong>Output:</strong> <span class="example-io">true</span></p>
+### 🧠 Approaches Implemented:
 
-<p><strong>Explanation:</strong></p>
+---
 
-<p>The element 1 occurs at the indices 0 and 3.</p>
-</div>
+## 🧩 1. Sorting Approach
 
-<p><strong class="example">Example 2:</strong></p>
+```cpp
+bool containsDuplicate(vector<int>& nums) {
+    sort(nums.begin(), nums.end()); 
+    for (int i = 1; i < nums.size(); i++) {
+        if (nums[i] == nums[i - 1]) return true;
+    }
+    return false;
+}
+````
 
-<div class="example-block">
-<p><strong>Input:</strong> <span class="example-io">nums = [1,2,3,4]</span></p>
+**Logic:**
 
-<p><strong>Output:</strong> <span class="example-io">false</span></p>
+* Sort the array so that duplicates come next to each other.
+* Then check for adjacent equal elements.
 
-<p><strong>Explanation:</strong></p>
+**Time Complexity:** `O(n log n)`
+**Space Complexity:** `O(1)` (ignoring sort space)
 
-<p>All elements are distinct.</p>
-</div>
+---
 
-<p><strong class="example">Example 3:</strong></p>
+## 🔁 2. Hash Set Approach
 
-<div class="example-block">
-<p><strong>Input:</strong> <span class="example-io">nums = [1,1,1,3,3,4,3,2,4,2]</span></p>
+```cpp
+bool containsDuplicate(vector<int>& nums) {
+    unordered_set<int> seen;
+    for (int num : nums) {
+        if (seen.count(num)) return true;
+        seen.insert(num);
+    }
+    return false;
+}
+```
 
-<p><strong>Output:</strong> <span class="example-io">true</span></p>
-</div>
+**Logic:**
 
-<p>&nbsp;</p>
-<p><strong>Constraints:</strong></p>
+* Use a hash set to track seen elements.
+* If an element is already in the set, it's a duplicate.
 
-<ul>
-	<li><code>1 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>
-	<li><code>-10<sup>9</sup> &lt;= nums[i] &lt;= 10<sup>9</sup></code></li>
-</ul>
+**Time Complexity:** `O(n)`
+**Space Complexity:** `O(n)`
+
+---
+
+## 📊 3. Frequency Map Approach
+
+```cpp
+bool containsDuplicate(vector<int>& nums) {
+    unordered_map<int, int> freq;
+    for (int num : nums) {
+        freq[num]++;
+        if (freq[num] > 1) return true;
+    }
+    return false;
+}
+```
+
+**Logic:**
+
+* Count frequency of each number.
+* If any number appears more than once, return true.
+
+**Time Complexity:** `O(n)`
+**Space Complexity:** `O(n)`
