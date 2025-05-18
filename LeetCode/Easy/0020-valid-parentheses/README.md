@@ -1,50 +1,75 @@
-<h2><a href="https://leetcode.com/problems/valid-parentheses">20. Valid Parentheses</a></h2><h3>Easy</h3><hr><p>Given a string <code>s</code> containing just the characters <code>&#39;(&#39;</code>, <code>&#39;)&#39;</code>, <code>&#39;{&#39;</code>, <code>&#39;}&#39;</code>, <code>&#39;[&#39;</code> and <code>&#39;]&#39;</code>, determine if the input string is valid.</p>
+# Valid Parentheses Checker
 
-<p>An input string is valid if:</p>
+## Overview
+This repository contains an optimized **O(n)** solution for checking whether a given string of brackets (`()`, `{}`, `[]`) is **balanced and properly nested**.
 
-<ol>
-	<li>Open brackets must be closed by the same type of brackets.</li>
-	<li>Open brackets must be closed in the correct order.</li>
-	<li>Every close bracket has a corresponding open bracket of the same type.</li>
-</ol>
+## Problem Statement
+Given a string `s` consisting of **only parentheses characters** (`(`, `)`, `{`, `}`, `[`, `]`), determine if the brackets are **valid**.
 
-<p>&nbsp;</p>
-<p><strong class="example">Example 1:</strong></p>
+A string is considered **valid** if:
+- Every **open bracket** has a corresponding **close bracket**.
+- Brackets are **nested correctly** (e.g., `{[()]}` is valid, but `{[(])}` is not).
 
-<div class="example-block">
-<p><strong>Input:</strong> <span class="example-io">s = &quot;()&quot;</span></p>
+### **Example 1**
+```cpp
+Input: s = "{[()]}"
+Output: true
+Explanation: All brackets are correctly matched.
+```
 
-<p><strong>Output:</strong> <span class="example-io">true</span></p>
-</div>
+### **Example 2**
+```cpp
+Input: s = "(]"
+Output: false
+Explanation: Open bracket `(` does not have a corresponding `)`.
+```
 
-<p><strong class="example">Example 2:</strong></p>
+## Solution Approach
+This approach utilizes a **stack data structure**:
+1. **Push open brackets** (`(`, `{`, `[`) onto the stack.
+2. **On encountering close brackets** (`)`, `}`, `]`):
+   - Check if the **stack is empty** (invalid case).
+   - Compare with the **top of the stack** to ensure proper matching.
+   - If matched, **pop** the stack; otherwise, return **false**.
+3. **At the end**, check if the stack is **empty**. If yes, the brackets are balanced.
 
-<div class="example-block">
-<p><strong>Input:</strong> <span class="example-io">s = &quot;()[]{}&quot;</span></p>
+### **Implementation**
+```cpp
+#include <iostream>
+#include <stack>
+using namespace std;
 
-<p><strong>Output:</strong> <span class="example-io">true</span></p>
-</div>
+bool isValid(string s) {
+    stack<char> st;
 
-<p><strong class="example">Example 3:</strong></p>
+    for (char ch : s) {
+        if (ch == '(' || ch == '{' || ch == '[') {
+            st.push(ch);
+        } else if (ch == ')' || ch == '}' || ch == ']') {
+            if (st.empty()) return false;
 
-<div class="example-block">
-<p><strong>Input:</strong> <span class="example-io">s = &quot;(]&quot;</span></p>
+            char top = st.top();
+            if ((ch == ')' && top == '(') ||
+                (ch == '}' && top == '{') ||
+                (ch == ']' && top == '[')) {
+                st.pop();
+            } else {
+                return false;
+            }
+        }
+    }
 
-<p><strong>Output:</strong> <span class="example-io">false</span></p>
-</div>
+    return st.empty();
+}
 
-<p><strong class="example">Example 4:</strong></p>
+int main() {
+    string s = "{[()]}";
+    cout << (isValid(s) ? "Balanced" : "Not Balanced") << endl;
+    return 0;
+}
+```
 
-<div class="example-block">
-<p><strong>Input:</strong> <span class="example-io">s = &quot;([])&quot;</span></p>
+### **Complexity Analysis**
+- **Time Complexity**: `O(n)`, since each character is processed once.
+- **Space Complexity**: `O(n)`, in the worst case where all characters are open brackets.
 
-<p><strong>Output:</strong> <span class="example-io">true</span></p>
-</div>
-
-<p>&nbsp;</p>
-<p><strong>Constraints:</strong></p>
-
-<ul>
-	<li><code>1 &lt;= s.length &lt;= 10<sup>4</sup></code></li>
-	<li><code>s</code> consists of parentheses only <code>&#39;()[]{}&#39;</code>.</li>
-</ul>
