@@ -1,45 +1,40 @@
-<h2><a href="https://leetcode.com/problems/find-greatest-common-divisor-of-array">1979. Find Greatest Common Divisor of Array</a></h2><h3>Easy</h3><hr><p>Given an integer array <code>nums</code>, return<strong> </strong><em>the <strong>greatest common divisor</strong> of the smallest number and largest number in </em><code>nums</code>.</p>
+### **Explanation of `findGCD()` Function**
+The `findGCD()` function finds the **Greatest Common Divisor (GCD)** of the smallest and largest number in a given array using the **Euclidean Algorithm**, which is an efficient method for computing GCD.
 
-<p>The <strong>greatest common divisor</strong> of two numbers is the largest positive integer that evenly divides both numbers.</p>
+#### **Key Steps in the Code**
+1. **Find the smallest (`s`) and largest (`m`) elements in the array**
+   - `s = *min_element(nums.begin(), nums.end());` → Finds the **smallest number**.
+   - `m = *max_element(nums.begin(), nums.end());` → Finds the **largest number**.
 
-<p>&nbsp;</p>
-<p><strong class="example">Example 1:</strong></p>
+2. **Use the Euclidean Algorithm to find the GCD**
+   - The **Euclidean Algorithm** states that:
+     \[
+     \text{GCD}(m, s) = \text{GCD}(s, m \mod s)
+     \]
+   - It repeatedly replaces `m` with `s` and `s` with `m % s` **until `s` becomes 0**.
 
-<pre>
-<strong>Input:</strong> nums = [2,5,6,9,10]
-<strong>Output:</strong> 2
-<strong>Explanation:</strong>
-The smallest number in nums is 2.
-The largest number in nums is 10.
-The greatest common divisor of 2 and 10 is 2.
-</pre>
+3. **Return the final value of `m` (which holds the GCD)**.
 
-<p><strong class="example">Example 2:</strong></p>
+---
 
-<pre>
-<strong>Input:</strong> nums = [7,5,6,8,3]
-<strong>Output:</strong> 1
-<strong>Explanation:</strong>
-The smallest number in nums is 3.
-The largest number in nums is 8.
-The greatest common divisor of 3 and 8 is 1.
-</pre>
+### **Dry Run Example**
+#### **Input:** `{6, 7, 9}`
+- **Step 1:** Find min and max  
+  - `s = 6`, `m = 9`
 
-<p><strong class="example">Example 3:</strong></p>
+#### **Step-by-Step Execution**
+| Step | `m` | `s` | `m % s` | Updated `m` | Updated `s` |
+|------|----|----|------|----------|----------|
+| 1 | `9` | `6` | `9 % 6 = 3` | `6` | `3` |
+| 2 | `6` | `3` | `6 % 3 = 0` | `3` | `0` |
 
-<pre>
-<strong>Input:</strong> nums = [3,3]
-<strong>Output:</strong> 3
-<strong>Explanation:</strong>
-The smallest number in nums is 3.
-The largest number in nums is 3.
-The greatest common divisor of 3 and 3 is 3.
-</pre>
+- **Loop Ends** (`s == 0`), so **GCD = `3`**.
 
-<p>&nbsp;</p>
-<p><strong>Constraints:</strong></p>
+#### **Final Output:** `3`
 
-<ul>
-	<li><code>2 &lt;= nums.length &lt;= 1000</code></li>
-	<li><code>1 &lt;= nums[i] &lt;= 1000</code></li>
-</ul>
+---
+
+### **Time Complexity**
+- **Finding min/max:** `O(n)`
+- **Euclidean Algorithm:** `O(log(min(s, m)))`
+- **Overall Complexity:** `O(n + log(min(s, m)))` → **Very efficient!**
