@@ -1,42 +1,63 @@
-<h2><a href="https://leetcode.com/problems/flipping-an-image">832. Flipping an Image</a></h2><h3>Easy</h3><hr><p>Given an <code>n x n</code> binary matrix <code>image</code>, flip the image <strong>horizontally</strong>, then invert it, and return <em>the resulting image</em>.</p>
+# Flipping and Inverting a Binary Image
 
-<p>To flip an image horizontally means that each row of the image is reversed.</p>
+## Introduction
+This repository implements an algorithm to **flip** and **invert** a binary matrix efficiently. Each row is reversed (mirrored) and each bit (`0` → `1`, `1` → `0`) is flipped.
 
-<ul>
-	<li>For example, flipping <code>[1,1,0]</code> horizontally results in <code>[0,1,1]</code>.</li>
-</ul>
+## Problem Statement
+Given a **binary image matrix** (`0s` and `1s`), the function should:
+1. **Reverse (flip) each row** so that left-most elements move to the right.
+2. **Invert each element** (`0 → 1` and `1 → 0`).
 
-<p>To invert an image means that each <code>0</code> is replaced by <code>1</code>, and each <code>1</code> is replaced by <code>0</code>.</p>
+### **Example Input & Output**
+#### **Example 1**
+```cpp
+Input: image = [[1,1,0], [1,0,1], [0,0,0]]
+Output: [[1,0,0], [0,1,0], [1,1,1]]
+```
+#### **Transformation Steps**
+1. **Flip (reverse) each row**  
+   `[[0,1,1], [1,0,1], [0,0,0]]`
+2. **Invert each element**  
+   `[[1,0,0], [0,1,0], [1,1,1]]`
 
-<ul>
-	<li>For example, inverting <code>[0,1,1]</code> results in <code>[1,0,0]</code>.</li>
-</ul>
+---
 
-<p>&nbsp;</p>
-<p><strong class="example">Example 1:</strong></p>
+## **Algorithm Explanation**
+### **Code Implementation**
+```cpp
+vector<vector<int>> flipAndInvertImage(vector<vector<int>>& image) {
+    for (auto& row : image) {
+        int i = 0, j = row.size() - 1;
 
-<pre>
-<strong>Input:</strong> image = [[1,1,0],[1,0,1],[0,0,0]]
-<strong>Output:</strong> [[1,0,0],[0,1,0],[1,1,1]]
-<strong>Explanation:</strong> First reverse each row: [[0,1,1],[1,0,1],[0,0,0]].
-Then, invert the image: [[1,0,0],[0,1,0],[1,1,1]]
-</pre>
+        // Two-pointer approach to swap and invert elements simultaneously
+        for (; i < j; ++i, --j) {
+            if (row[i] == row[j]) {
+                row[i] ^= 1; // Flip 0 → 1 or 1 → 0
+                row[j] ^= 1; // Flip 0 → 1 or 1 → 0
+            }
+        }
+        
+        // If row has an odd number of elements, the middle one needs flipping
+        if (i == j) {
+            row[i] ^= 1;
+        }
+    }
+    return image;
+}
+```
 
-<p><strong class="example">Example 2:</strong></p>
+### **Logic Breakdown**
+1. **Iterate over each row in the matrix.**
+2. **Use two pointers (`i` and `j`)**:
+   - `i` starts from the left.
+   - `j` starts from the right.
+   - Swap and invert the bits **only if both bits are equal** (ensuring flipping happens efficiently).
+3. **Middle element correction**:
+   - If the row length is odd (`i == j` at the middle), flip the middle element.
 
-<pre>
-<strong>Input:</strong> image = [[1,1,0,0],[1,0,0,1],[0,1,1,1],[1,0,1,0]]
-<strong>Output:</strong> [[1,1,0,0],[0,1,1,0],[0,0,0,1],[1,0,1,0]]
-<strong>Explanation:</strong> First reverse each row: [[0,0,1,1],[1,0,0,1],[1,1,1,0],[0,1,0,1]].
-Then invert the image: [[1,1,0,0],[0,1,1,0],[0,0,0,1],[1,0,1,0]]
-</pre>
+---
 
-<p>&nbsp;</p>
-<p><strong>Constraints:</strong></p>
-
-<ul>
-	<li><code>n == image.length</code></li>
-	<li><code>n == image[i].length</code></li>
-	<li><code>1 &lt;= n &lt;= 20</code></li>
-	<li><code>images[i][j]</code> is either <code>0</code> or <code>1</code>.</li>
-</ul>
+## **Time Complexity Analysis**
+- **O(N × M / 2) ≈ O(N × M)**
+  - Since each row is processed **with two pointers**, work is reduced by half.
+- **O(1) Space Complexity** (In-place modification).
