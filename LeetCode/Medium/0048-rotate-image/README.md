@@ -1,27 +1,141 @@
-<h2><a href="https://leetcode.com/problems/rotate-image">48. Rotate Image</a></h2><h3>Medium</h3><hr><p>You are given an <code>n x n</code> 2D <code>matrix</code> representing an image, rotate the image by <strong>90</strong> degrees (clockwise).</p>
+# 🔄 LeetCode Problem: Rotate Image (90° Matrix Rotation)
 
-<p>You have to rotate the image <a href="https://en.wikipedia.org/wiki/In-place_algorithm" target="_blank"><strong>in-place</strong></a>, which means you have to modify the input 2D matrix directly. <strong>DO NOT</strong> allocate another 2D matrix and do the rotation.</p>
+## 🧾 Problem Statement
 
-<p>&nbsp;</p>
-<p><strong class="example">Example 1:</strong></p>
-<img alt="" src="https://assets.leetcode.com/uploads/2020/08/28/mat1.jpg" style="width: 500px; height: 188px;" />
-<pre>
-<strong>Input:</strong> matrix = [[1,2,3],[4,5,6],[7,8,9]]
-<strong>Output:</strong> [[7,4,1],[8,5,2],[9,6,3]]
-</pre>
+You are given an `n x n` 2D matrix representing an image, rotate the image by **90 degrees clockwise** in-place.
 
-<p><strong class="example">Example 2:</strong></p>
-<img alt="" src="https://assets.leetcode.com/uploads/2020/08/28/mat2.jpg" style="width: 500px; height: 201px;" />
-<pre>
-<strong>Input:</strong> matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]
-<strong>Output:</strong> [[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]
-</pre>
+---
 
-<p>&nbsp;</p>
-<p><strong>Constraints:</strong></p>
+## ✅ Solution Approach: Transpose + Reverse Rows
 
-<ul>
-	<li><code>n == matrix.length == matrix[i].length</code></li>
-	<li><code>1 &lt;= n &lt;= 20</code></li>
-	<li><code>-1000 &lt;= matrix[i][j] &lt;= 1000</code></li>
-</ul>
+```cpp
+void rotate(vector<vector<int>>& matrix) {
+    int n = matrix.size();
+
+    // Step 1: Transpose the matrix
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            swap(matrix[i][j], matrix[j][i]);
+        }
+    }
+
+    // Step 2: Reverse each row
+    for (int i = 0; i < n; i++) {
+        reverse(matrix[i].begin(), matrix[i].end());
+    }
+}
+````
+
+---
+
+## 🧠 Intuition
+
+### 🔷 What is a 90° clockwise rotation?
+
+You want to rotate all elements such that:
+
+* First row becomes the last column
+* Second row becomes second-last column
+* And so on...
+
+For example:
+
+**Input:**
+
+```
+1 2 3
+4 5 6
+7 8 9
+```
+
+**Output after 90° Clockwise:**
+
+```
+7 4 1
+8 5 2
+9 6 3
+```
+
+---
+
+## 🧮 Step-by-Step Explanation
+
+### ✅ Step 1: **Transpose the Matrix**
+
+Swap `matrix[i][j]` with `matrix[j][i]`. This reflects the matrix across its main diagonal.
+
+**After Transpose:**
+
+```
+1 4 7
+2 5 8
+3 6 9
+```
+
+### ✅ Step 2: **Reverse Each Row**
+
+This makes the rows flip horizontally — giving the final rotated form.
+
+**After Reverse:**
+
+```
+7 4 1
+8 5 2
+9 6 3
+```
+
+---
+
+## 🔁 Other Rotations Intuition
+
+### 🔁 90° Counter-Clockwise
+
+* **Reverse columns**
+* Then **transpose**
+
+```cpp
+// Step 1: Reverse columns
+for (int j = 0; j < n; j++) {
+    for (int i = 0, k = n - 1; i < k; i++, k--) {
+        swap(matrix[i][j], matrix[k][j]);
+    }
+}
+// Step 2: Transpose
+transpose(matrix);  // same transpose logic as above
+```
+
+### 🔁 180° Rotation
+
+Can be done in two ways:
+
+* Reverse both rows and columns
+* Or do `reverse(matrix.begin(), matrix.end())` then `reverse(matrix[i].begin(), matrix[i].end())` for each row
+
+```cpp
+for (int i = 0; i < n; i++) {
+    reverse(matrix[i].begin(), matrix[i].end());
+}
+reverse(matrix.begin(), matrix.end());
+```
+
+---
+
+## ⏱ Time & Space Complexity
+
+| Operation    | Time  | Space |
+| ------------ | ----- | ----- |
+| Transpose    | O(n²) | O(1)  |
+| Reverse Rows | O(n²) | O(1)  |
+
+**Total:**
+✅ Time Complexity: `O(n²)`
+✅ Space Complexity: `O(1)` (In-place)
+
+---
+
+## 📌 Final Notes
+
+* **Transpose + reverse rows** → 90° clockwise
+* **Transpose + reverse columns** → 90° counter-clockwise
+* **Reverse both rows & columns** → 180° rotation
+* Code runs in-place with constant extra space.
